@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor Appointment BD — Offline Doctor Visit Organizer for Bangladesh</title>
+<meta name="description" content="Offline bilingual doctor-appointment organizer: keep your doctors, appointments and visit history on your own device. Not a booking service.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="app-header">
+  <div class="header-inner">
+    <div>
+      <h1>Doctor Appointment BD</h1>
+      <p class="tagline" data-i18n="tagline">Keep your doctor visits organised — offline, free, yours.</p>
+    </div>
+    <button id="lang-btn" class="lang-btn" type="button" aria-label="Switch language">বাংলা</button>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sections">
+  <button class="tab-btn active" data-tab="dashboard" type="button" data-i18n="tabDashboard">Dashboard</button>
+  <button class="tab-btn" data-tab="doctors" type="button" data-i18n="tabDoctors">Doctors</button>
+  <button class="tab-btn" data-tab="appointments" type="button" data-i18n="tabAppointments">Appointments</button>
+  <button class="tab-btn" data-tab="history" type="button" data-i18n="tabHistory">Visit History</button>
+  <button class="tab-btn" data-tab="data" type="button" data-i18n="tabData">Data</button>
+</nav>
+
+<main>
+  <!-- DASHBOARD -->
+  <section id="tab-dashboard" class="tab-panel active">
+    <div class="panel-head"><h2 data-i18n="dashTitle">Dashboard</h2></div>
+    <div id="dash-stats" class="stat-grid"></div>
+    <h3 class="section-title" data-i18n="todayTitle">Today</h3>
+    <p id="today-empty" class="empty" data-i18n="noToday">No appointments today.</p>
+    <div id="today-list" class="card-grid"></div>
+    <h3 class="section-title" data-i18n="tomorrowTitle">Tomorrow</h3>
+    <p id="tomorrow-empty" class="empty" data-i18n="noTomorrow">No appointments tomorrow.</p>
+    <div id="tomorrow-list" class="card-grid"></div>
+    <h3 class="section-title" data-i18n="upcomingTitle">Upcoming appointments</h3>
+    <p id="upcoming-empty" class="empty" data-i18n="noUpcoming">No upcoming appointments. Book one from the Appointments tab.</p>
+    <div id="upcoming-list" class="card-grid"></div>
+  </section>
+
+  <!-- DOCTORS -->
+  <section id="tab-doctors" class="tab-panel">
+    <div class="panel-head"><h2 data-i18n="doctorsTitle">My Doctors</h2></div>
+    <div class="lib-tools">
+      <input id="doc-search" type="search" data-i18n-ph="docSearchPh" placeholder="Search by name, chamber, specialty…" aria-label="Search doctors">
+      <select id="doc-filter" aria-label="Filter by specialty"></select>
+    </div>
+    <form id="doctor-form" class="card form-card" novalidate>
+      <h3 id="doctor-form-title" data-i18n="addDoctor">+ Add doctor</h3>
+      <p id="doctor-errors" class="errors" role="alert" hidden></p>
+      <div class="form-grid">
+        <label class="field"><span class="field-label" data-i18n="docName">Doctor name</span>
+          <input id="doc-name" type="text" maxlength="80" required></label>
+        <label class="field"><span class="field-label" data-i18n="docSpecialty">Specialty</span>
+          <select id="doc-specialty"></select></label>
+        <label class="field"><span class="field-label" data-i18n="docChamber">Chamber / hospital</span>
+          <input id="doc-chamber" type="text" maxlength="120" required></label>
+        <label class="field"><span class="field-label" data-i18n="docPhone">Phone (optional)</span>
+          <input id="doc-phone" type="tel" inputmode="tel" placeholder="+880 1XXX-XXXXXX"></label>
+        <label class="field"><span class="field-label" data-i18n="docFee">Consultation fee in BDT (optional)</span>
+          <input id="doc-fee" type="number" min="0" max="1000000" step="1" inputmode="numeric"></label>
+      </div>
+      <fieldset class="days-fieldset">
+        <legend data-i18n="docDays">Visiting days</legend>
+        <div id="doc-days" class="days-row"></div>
+      </fieldset>
+      <div class="form-actions">
+        <button id="doc-save-btn" class="btn primary" type="submit" data-i18n="saveDoctor">Save doctor</button>
+        <button id="doc-cancel-btn" class="btn" type="button" data-i18n="cancelBtn" hidden>Cancel</button>
+      </div>
+    </form>
+    <p id="doc-empty" class="empty" data-i18n="docEmpty">No doctors yet. Add your first doctor to start booking appointments.</p>
+    <div id="doc-list" class="card-grid"></div>
+  </section>
+
+  <!-- APPOINTMENTS -->
+  <section id="tab-appointments" class="tab-panel">
+    <div class="panel-head"><h2 data-i18n="apptTitle">Appointments</h2></div>
+    <form id="appt-form" class="card form-card" novalidate>
+      <h3 id="appt-form-title" data-i18n="bookTitle">Book an appointment</h3>
+      <p id="appt-errors" class="errors" role="alert" hidden></p>
+      <div class="form-grid">
+        <label class="field"><span class="field-label" data-i18n="apptDoctor">Doctor</span>
+          <select id="appt-doctor"></select></label>
+        <label class="field"><span class="field-label" data-i18n="apptDate">Date</span>
+          <input id="appt-date" type="date" required></label>
+        <label class="field"><span class="field-label" data-i18n="apptTime">Time</span>
+          <input id="appt-time" type="time" required></label>
+        <label class="field"><span class="field-label" data-i18n="apptPatient">Patient name</span>
+          <input id="appt-patient" type="text" maxlength="80" required></label>
+        <label class="field"><span class="field-label" data-i18n="apptReason">Reason / notes (optional)</span>
+          <input id="appt-reason" type="text" maxlength="500"></label>
+      </div>
+      <div class="form-actions">
+        <button id="appt-submit-btn" class="btn primary" type="submit" data-i18n="bookSubmit">Book appointment</button>
+        <button id="appt-cancel-btn" class="btn" type="button" data-i18n="cancelBtn" hidden>Cancel</button>
+      </div>
+    </form>
+    <h3 class="section-title" data-i18n="upcomingTitle">Upcoming appointments</h3>
+    <p id="appt-empty" class="empty" data-i18n="apptEmpty">No appointments yet. Book your first one above.</p>
+    <div id="appt-list" class="card-grid"></div>
+    <h3 class="section-title" data-i18n="cancelledLabel">Cancelled</h3>
+    <p id="cancelled-empty" class="empty" hidden>No cancelled appointments.</p>
+    <div id="cancelled-list" class="card-grid"></div>
+  </section>
+
+  <!-- HISTORY -->
+  <section id="tab-history" class="tab-panel">
+    <div class="panel-head"><h2 data-i18n="histTitle">Visit History</h2></div>
+    <div class="lib-tools">
+      <select id="hist-doctor" aria-label="Filter by doctor"></select>
+      <select id="hist-status" aria-label="Filter by status"></select>
+    </div>
+    <p id="hist-empty" class="empty" data-i18n="histEmpty">No visits yet. Completed appointments will appear here with your notes.</p>
+    <div id="hist-list" class="card-grid"></div>
+  </section>
+
+  <!-- DATA -->
+  <section id="tab-data" class="tab-panel">
+    <div class="panel-head"><h2 data-i18n="dataTitle">Your data</h2></div>
+    <div class="data-actions">
+      <button id="export-btn" class="btn" type="button" data-i18n="exportBtn">⬇ Export everything (JSON)</button>
+      <button id="import-btn" class="btn" type="button" data-i18n="importBtn">⬆ Import JSON file</button>
+      <button id="erase-btn" class="btn danger" type="button" data-i18n="eraseBtn">Erase everything</button>
+    </div>
+    <p id="data-msg" class="data-msg" role="status"></p>
+    <input id="import-file" type="file" accept=".json,application/json" hidden>
+  </section>
+</main>
+
+<footer class="app-footer">
+  <p data-i18n="footer">Doctor Appointment BD — a personal, offline organizer for your own doctor visits. This is not a booking service and does not contact any doctor or hospital. Always verify chamber days and timings by phone before visiting.</p>
+</footer>
+
+<script src="js/logic.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
