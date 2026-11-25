@@ -8,10 +8,11 @@ Does NOT push anything itself. Binary smoke screenshots are local-only
 evidence (the push API cannot carry binaries) and are NOT included.
 
 NOTE: chunks a/b were pushed 2026-11-25 with "factory run #441" in their
-commit messages (the number at build time); the ledger number is #445.
-Re-running this script regenerates a/b payloads with #445 messages — do
-NOT re-push a/b. Chunk-c (run-number correction) is built by
-/tmp/dabd-push/make_chunk_c.py, not by this script.
+commit messages and chunk-c with #445 (the number at each push time); the
+ledger number is #447. Re-running this script regenerates a/b payloads
+with #447 messages — do NOT re-push a/b. Chunk-c was built by
+/tmp/dabd-push/make_chunk_c.py and chunk-d by /tmp/dabd-push/make_chunk_d.py,
+not by this script.
 """
 import json, os
 
@@ -57,7 +58,7 @@ def main():
         chunks.append(cur)
 
     for i, chunk_files in enumerate(chunks, 1):
-        message = (f'doctor-appointment-bd factory run #445 '
+        message = (f'doctor-appointment-bd factory run #447 '
                    f'({i}/{len(chunks)}): ' +
                    ', '.join(e['path'] for e in chunk_files))
         payload = {
