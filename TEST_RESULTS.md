@@ -1,6 +1,6 @@
 # Doctor Appointment BD — Test Results
 
-Run: factory 16:00 slot, 2026-11-25 (run #441 at record time).
+Run: factory 16:00 slot, 2026-11-25 (run #445; built as #441, renumbered at record time — ledger max moved while concurrent slots recorded).
 Date verified: Wed 2026-11-25, Asia/Dhaka.
 
 ## Unit tests — 38/38 PASS
@@ -45,4 +45,13 @@ Date verified: Wed 2026-11-25, Asia/Dhaka.
 
 ## ASCII safety
 
-All `js/*.js` and `tests/*.js` files were converted to pure ASCII (`\uXXXX` escapes) after authoring, and the tests were re-run green after conversion (38/38 unit, 60/60 smoke @1280, 60/60 smoke @390). `index.html` keeps one literal Bengali word (the 'বাংলা' language button, same as prior factory runs); the push payload is built with `ensure_ascii=True` in `prepare-push.py`, so no non-ASCII byte travels through argv. `prepare-push.py` output verified 2026-11-25 ~16:37 +06: chunk-a 56,434 bytes, chunk-b 73,795 bytes (both under 90KB, both pure ASCII).
+All `js/*.js` and `tests/*.js` files were converted to pure ASCII (`\uXXXX` escapes) after authoring, and the tests were re-run green after conversion (38/38 unit, 60/60 smoke @1280, 60/60 smoke @390). `index.html` keeps one literal Bengali word (the 'বাংলা' language button, same as prior factory runs); the push payload is built with `ensure_ascii=True` in `prepare-push.py`, so no non-ASCII byte travels through argv. `prepare-push.py` output verified 2026-11-25 ~16:37 +06: chunk-a 56,434 bytes, chunk-b 73,800 bytes (both under 90KB, both pure ASCII).
+
+## Push & publication
+
+- Repo: https://github.com/fahad3235/doctor-appointment-bd — PUBLIC, created via browser 2026-11-25 ~16:07 +06, verified empty before push.
+- Chunk-a landed 2026-11-25 ~16:10 +06 (commit fdf53b38: index.html, css/style.css, js/data.js, js/logic.js). First attempt failed with 409 "Git Repository is empty" from the push tool; a retry after the repo showed its auto-created initial commit (9ed75803) succeeded.
+- Chunk-b landed 2026-11-25 ~16:13 +06 (commit 7a166454: js/app.js, tests/test.js, tests/smoke.mjs, README.md, TEST_RESULTS.md, .gitignore).
+- Verified on remote: 3 commits (initial + fdf53b38 + 7a166454); js/data.js and js/app.js byte-identical to local, Bengali `\uXXXX` escapes intact.
+- Run-number correction: chunk-a/b commit messages say "factory run #441" (the number at build time); the ledger number is #445 (concurrent slots recorded #441–#444 while this run was in flight). README.md, TEST_RESULTS.md and prepare-push.py were corrected to #445 and pushed as chunk-c (commit recorded in the ledger row); the chunk-a/b messages cannot be rewritten without force-push, which is forbidden.
+- Pages: enabled via browser (main branch, root) 2026-11-25 ~18:05 +06; Pages reports "Your site is live at https://fahad3235.github.io/doctor-appointment-bd/". Live site verified HTTP 200 by curl (8,063 bytes = local index.html, correct title).

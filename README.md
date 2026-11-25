@@ -2,7 +2,7 @@
 
 Keep your doctors, appointments and visit history organised in English or বাংলা — fully offline, no account, no server. Your data never leaves your device.
 
-**Factory run #441** · 16:00 slot, 2026-11-25 (Asia/Dhaka) · Status: built, tested, awaiting push
+**Factory run #445** · 16:00 slot, 2026-11-25 (Asia/Dhaka) · Status: published and verified — live on GitHub Pages
 
 ## Problem
 
